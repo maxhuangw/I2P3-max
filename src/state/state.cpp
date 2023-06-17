@@ -31,6 +31,10 @@ int State::evaluate(){
   }
   
   return white_material-black_material;
+  /*
+  if(player==1) return white_material-black_material;
+  else if(player==0) return black_material-white_material;
+  */
 }
 
 

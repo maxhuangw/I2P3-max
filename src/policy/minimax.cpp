@@ -1,5 +1,6 @@
 #include <cstdlib>
-//#include<iostream>
+#include<iostream>
+#include <fstream>
 
 #include "../state/state.hpp"
 #include "./minimax.hpp"
@@ -19,72 +20,45 @@ Move Minimax::get_move(State *state, int depth){
 
   auto actions = state->legal_actions;
   Move best;
-  int besteval=0;
+  int besteval=-1e9;
   if(state->player==1) besteval=1e9;
-  auto now=State(state->board);
+  auto now=State(state->board, state->player);
 
   for(auto it: actions){
-    int run=depth;
-    int nexteval=0;
-    auto now=State(state->board);
+    int nexteval;
+    //auto now=State(state->board);
     auto n=now.next_state(it);
-    int teval;
-    teval=n->evaluate();
-    if(state->player==0){
-      if(teval > besteval){
-        besteval=teval;
-        best=it;
-      }
-    }
-    else if(state->player==1){
-      if(teval < besteval){
-        besteval=teval;
-        best=it;
-      }
-    }
-  }
-  /*
-  for(auto it: actions){
-    int run=depth;
-    int nexteval=0;
-    auto now=State(state->board);
-    auto n=now.next_state(it);
-    int teval;
-
+    
     if(depth!=0){
-      now=State(state->board);
-      teval=now.next_state(Minimax::get_move(n, depth-1))->evaluate();
-      if(state->player==0){
-        if(teval > besteval){
-          besteval=teval;
-          best=it;
-        }
+      //std::cout<<it.first.first<<it.first.second<<" "<<it.second.first<<it.second.second;
+      nexteval=(n->next_state(Minimax::get_move(n, depth-1)))->evaluate();
+      //std::cout<<nexteval<<"\n\n";
+      if((state->player)%2==0 && nexteval > besteval){
+        besteval=nexteval;
+        best=it;
       }
-      else if(state->player==1){
-        if(teval < besteval){
-          besteval=teval;
-          best=it;
-        }
+      else if((state->player)%2==1 && nexteval < besteval){
+        besteval=nexteval;
+        best=it;
       }
     }
     else{
-      teval=n->evaluate();
-      if(state->player==0){
-        if(teval > besteval){
-          besteval=teval;
-          best=it;
-        }
+      nexteval=n->evaluate();
+      //std::cout<<nexteval<<" "<<it.first.first<<it.first.second<<" "<<it.second.first<<it.second.second<<" "<<state->player<<" "<<besteval<<std::endl;
+      if((state->player)%2==0 && nexteval > besteval){
+        besteval=nexteval;
+        best=it;
       }
-      else if(state->player==1){
-        if(teval < besteval){
-          besteval=teval;
-          best=it;
-        }
+      else if((state->player)%2==1 && nexteval < besteval){
+        besteval=nexteval;
+        best=it;
       }
     }
   }
-  */
-    
+
+  //std::cout<<besteval<<" "<<" "<<best.first.first<<best.first.second<<" "<<best.second.first<<best.second.second<<std::endl;
+  
+  
   //return actions[(rand()+depth)%actions.size()];
   return best;
 }
