@@ -21,10 +21,13 @@ Move Minimax::get_move(State *state, int depth){
   auto actions = state->legal_actions;
   Move best;
   int besteval=-1e9;
-  if(state->player==1) besteval=1e9;
+  if(depth==0) besteval=1e9;
+  //int besteval=-1e9;
+  //if(state->player==1) besteval=1e9;
   auto now=State(state->board, state->player);
-
-  for(auto it: actions){
+  
+    
+   for(auto it: actions){
     int nexteval;
     //auto now=State(state->board);
     auto n=now.next_state(it);
@@ -33,11 +36,7 @@ Move Minimax::get_move(State *state, int depth){
       //std::cout<<it.first.first<<it.first.second<<" "<<it.second.first<<it.second.second;
       nexteval=(n->next_state(Minimax::get_move(n, depth-1)))->evaluate();
       //std::cout<<nexteval<<"\n\n";
-      if((state->player)%2==0 && nexteval > besteval){
-        besteval=nexteval;
-        best=it;
-      }
-      else if((state->player)%2==1 && nexteval < besteval){
+      if(nexteval > besteval){
         besteval=nexteval;
         best=it;
       }
@@ -45,16 +44,13 @@ Move Minimax::get_move(State *state, int depth){
     else{
       nexteval=n->evaluate();
       //std::cout<<nexteval<<" "<<it.first.first<<it.first.second<<" "<<it.second.first<<it.second.second<<" "<<state->player<<" "<<besteval<<std::endl;
-      if((state->player)%2==0 && nexteval > besteval){
-        besteval=nexteval;
-        best=it;
-      }
-      else if((state->player)%2==1 && nexteval < besteval){
+      if( nexteval < besteval){
         besteval=nexteval;
         best=it;
       }
     }
   }
+  
 
   //std::cout<<besteval<<" "<<" "<<best.first.first<<best.first.second<<" "<<best.second.first<<best.second.second<<std::endl;
   
