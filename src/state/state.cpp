@@ -12,7 +12,7 @@
  * @return int 
  */
 
-static const int material_table[7] = {0, 1, 3, 3, 5, 9, 100000000};
+static const int material_table[7] = {0, 2, 6, 7, 8, 20, 100};
 
 int State::evaluate(){
   // [TODO] design your own evaluation function
@@ -21,7 +21,7 @@ int State::evaluate(){
   int piece;
   for(size_t i=0; i<BOARD_H; i+=1){
     for(size_t j=0; j<BOARD_W; j+=1){
-      if((piece=board.board[0][i][j])){
+      if((piece=board.board[0][i][j])){ 
         white_material += material_table[piece];
       }
       if((piece=board.board[1][i][j])){
@@ -29,10 +29,7 @@ int State::evaluate(){
       }
     }
   }
-  
   //return white_material-black_material;
-
-  
   if(player==0) return white_material-black_material;
   else return black_material-white_material;
   
