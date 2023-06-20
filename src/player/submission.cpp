@@ -43,7 +43,7 @@ void write_valid_spot(std::ofstream& fout) {
   int depth=1;
   while(true) {
     // Choose a random spot.
-    auto move = Minimax::get_move(root, depth, root->player);
+    auto move = Submission::get_move(root, depth, root->player);
     fout << move.first.first << " " << move.first.second << " "\
          << move.second.first << " " << move.second.second << std::endl;
     

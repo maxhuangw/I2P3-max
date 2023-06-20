@@ -13,7 +13,7 @@
  * @param depth You may need this for other policy
  * @return Move 
  */
-Move Minimax::get_move(State *state, int depth, int baseplayer){
+Move Submission::get_move(State *state, int depth, int baseplayer){
   
   if(!state->legal_actions.size())
     state->get_legal_actions();
@@ -31,8 +31,8 @@ Move Minimax::get_move(State *state, int depth, int baseplayer){
     auto n=now.next_state(it);
     
     if(depth!=0){
-      if(issame) nexteval=(n->next_state(Minimax::get_move(n, depth-1, baseplayer))->evaluate());
-      else nexteval=(-(n->next_state(Minimax::get_move(n, depth-1, baseplayer)))->evaluate());
+      if(issame) nexteval=(n->next_state(Submission::get_move(n, depth-1, baseplayer))->evaluate());
+      else nexteval=(-(n->next_state(Submission::get_move(n, depth-1, baseplayer)))->evaluate());
       if(issame){
         if(nexteval > besteval){
           besteval=nexteval;
