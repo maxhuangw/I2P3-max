@@ -3,7 +3,7 @@
 #include <fstream>
 
 #include "../state/state.hpp"
-#include "./alphabeta.hpp"
+#include "./submission.hpp"
 
 
 /**
@@ -13,49 +13,51 @@
  * @param depth You may need this for other policy
  * @return Move 
  */
-
-
-Move AlphaBeta::get_move(State *state, int depth, int alpha, int beta, int baseplayer){
+Move Submission::get_move(State *state, int depth, int baseplayer){
+  
   if(!state->legal_actions.size())
     state->get_legal_actions();
-  
+
   auto actions = state->legal_actions;
   Move best;
+  int besteval;
   auto now=State(state->board, state->player);
   bool issame=(state->player==baseplayer);
+  if(issame)besteval=-1e9;
+  else besteval=1e9;
+  
    for(auto it: actions){
     int nexteval;
     auto n=now.next_state(it);
+    
     if(depth!=0){
-      if(issame) nexteval=(n->next_state(AlphaBeta::get_move(n, depth-1, alpha, beta, baseplayer)))->evaluate();
-      else nexteval=(-(n->next_state(AlphaBeta::get_move(n, depth-1, alpha, beta, baseplayer)))->evaluate());
+      if(issame) nexteval=(n->next_state(Submission::get_move(n, depth-1, baseplayer))->evaluate());
+      else nexteval=(-(n->next_state(Submission::get_move(n, depth-1, baseplayer)))->evaluate());
       if(issame){
-        if(nexteval > alpha){
-          alpha=nexteval;
+        if(nexteval > besteval){
+          besteval=nexteval;
           best=it;
         }
       }
-      else if(nexteval < beta){
-          beta=nexteval;
+      else if(nexteval<besteval){
+          besteval=nexteval;
           best=it;
       }
     }
     else{
-      nexteval=n->evaluate();
       if(issame) nexteval=(-n->evaluate());
       else nexteval=n->evaluate();
       if(issame){
-        if(nexteval > alpha){
-          alpha=nexteval;
+        if(nexteval > besteval){
+          besteval=nexteval;
           best=it;
         }
       }
-      else if(nexteval < beta){
-          beta=nexteval;
+      else if(nexteval<besteval){
+          besteval=nexteval;
           best=it;
       }
     }
-    if(alpha>beta) return best;
   }
   return best;
 }
