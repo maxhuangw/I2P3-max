@@ -12,7 +12,7 @@
  * @return int 
  */
 
-static const int material_table[7] = {0, 2, 6, 7, 8, 20, 100000000};
+static const int material_table[7] = {0, 1, 3, 3, 5, 9, 100000000};
 
 int State::evaluate(){
   // [TODO] design your own evaluation function
